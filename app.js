@@ -6,9 +6,9 @@ const port = 3000;
 // Configuração da conexão com o banco de dados
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'seu_usuario',
-  password: 'sua_senha',
-  database: 'seu_banco_de_dados'
+  user: 'root',
+  password: 'admin',
+  database: 'db_quiz'
 });
 
 // Middleware para processar requisições com JSON
