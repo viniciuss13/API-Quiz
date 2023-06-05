@@ -1,16 +1,21 @@
 const express = require('express');
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
 
+
+
+
+
+
 // Configuração do banco de dados
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'seu_usuario',
-  password: 'sua_senha',
-  database: 'nome_do_banco_de_dados'
+  user: 'root',
+  password: 'admin',
+  database: 'db_quiz'
 });
 
 // Conexão com o banco de dados
