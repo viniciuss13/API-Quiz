@@ -1,17 +1,22 @@
 {
-  "name": "quiz",
+  "name": "api",
   "version": "1.0.0",
-  "description": "quiz api",
-  "main": "app.js",
+  "description": "",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Vinicius Sanches / Gabriel Marques",
+  "keywords": [],
+  "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.4.0",
     "body-parser": "^1.20.2",
+    "dotenv": "^16.1.4",
+    "esm": "^3.2.25",
     "express": "^4.18.2",
-    "mysql": "^2.18.1",
-    "mysql2": "^3.3.3"
+    "inquirer": "^9.2.7",
+    "mysql2": "^3.3.3",
+    "readline-sync": "^1.4.10"
   }
 }
