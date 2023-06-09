@@ -4,9 +4,8 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "dev:up": "docker compose down && docker compose up --build -d",
     "dev": "node src/index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "keywords": [],
   "author": "",
