@@ -11,7 +11,7 @@ const ASK_DIFICULT = {
 
 /** 
 * @typedef Ask
-* @prop {string} _id
+* @prop {mongoose.Types.ObjectId} _id
 * @prop {string} tag
 * @prop {string} question
 * @prop {string[]} choices
@@ -28,7 +28,7 @@ const SCHEMA = new mongoose.Schema({
     choices: { type: [String], required: true },
     answer: { type: String, required: true },
     dificulty: { type: String, enum: Object.values(ASK_DIFICULT), required: true }
-})
+}, {versionKey: false})
 
 const MODEL = mongoose.model('questions', SCHEMA)
 
@@ -66,7 +66,7 @@ async function createAsk(input) {
 
 
 /**
- * @param {number} id 
+ * @param {string} id 
  * @param {UpdateAsk} input 
  */
 async function updateAsk(id, input) {
@@ -77,7 +77,7 @@ async function updateAsk(id, input) {
 
 
 /**
- * @param {number} id
+ * @param {string} id
  */
 async function removeAsk(id) {
     MODEL.findByIdAndRemove(id)

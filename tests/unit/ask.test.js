@@ -1,5 +1,7 @@
-const { createAsk } = require("../src/ask/ask.model")
-const { createAskFaker } = require("./faker/ask.faker")
+// @ts-check
+
+const { createAsk } = require("../../src/ask/ask.model")
+const { createAskFaker } = require("../faker/ask.faker")
 
 describe('Ask tests', () => {
     it('should create a ask', async () => {
