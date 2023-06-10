@@ -28,7 +28,7 @@ const SCHEMA = new mongoose.Schema({
     choices: { type: [String], required: true },
     answer: { type: String, required: true },
     dificulty: { type: String, enum: Object.values(ASK_DIFICULT), required: true }
-}, {versionKey: false})
+}, { versionKey: false })
 
 const MODEL = mongoose.model('questions', SCHEMA)
 
@@ -70,7 +70,7 @@ async function createAsk(input) {
  * @param {UpdateAsk} input 
  */
 async function updateAsk(id, input) {
-    const doc = await MODEL.findByIdAndUpdate(id, input)
+    const doc = await MODEL.findByIdAndUpdate(id, input, { new: true })
     if (doc === null) throw new Error(`Questão não encontrada com id ${id}`)
     return doc.toObject()
 }
