@@ -29,6 +29,7 @@ async function getDatabaseOptions() {
 /** @param {number?} port */
 async function startTestServer(port = null) {
     const databaseOptions = await getDatabaseOptions()
+    console.log(databaseOptions);
     await startServer(databaseOptions, port ?? faker.number.int({ min: 3001, max: 3999 }))
 }
 

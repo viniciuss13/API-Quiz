@@ -46,7 +46,7 @@ async function getById(id) {
  * @returns {Promise<Ask[]>}
  */
 async function listAllAsks() {
-    const doc = await MODEL.find()
+    const doc = await MODEL.find({})
     return doc.map((v) => v.toObject())
 }
 
@@ -58,10 +58,8 @@ async function createAsk(input) {
     if (!input.choices.includes(input.answer))
         throw new Error('A resposta correta deve estar entre as alternativas fornecidas')
 
-    const doc = new MODEL(input)
-    await doc.save({ validateBeforeSave: true })
-
-    return doc.toObject()
+    const doc = await MODEL.create([input], { validateBeforeSave: true })
+    return doc[0].toObject()
 }
 
 
