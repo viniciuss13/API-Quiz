@@ -58,8 +58,9 @@ async function createAsk(input) {
     if (!input.choices.includes(input.answer))
         throw new Error('A resposta correta deve estar entre as alternativas fornecidas')
 
-    const doc = await MODEL.create([input], { validateBeforeSave: true })
-    return doc[0].toObject()
+    const doc = new MODEL(input);
+    await doc.save({ validateBeforeSave: true })
+    return doc.toObject()
 }
 
 

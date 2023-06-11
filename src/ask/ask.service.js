@@ -14,8 +14,8 @@ async function loadCrud(app) {
   // Listar todas as perguntas
   app.get(`/${ENDPOINT}`, async (req, res) => {
     try {
-      const result = listAllAsks()
-      res.json(result)
+      const result = await listAllAsks()
+      return res.json(result)
     } catch (error) {
       res.status(500).json({ error: error.message })
     }
