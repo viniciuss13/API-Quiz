@@ -33,10 +33,7 @@ async function loadCrud(app) {
 
   // Remover uma pergunta
   app.delete(`/${ENDPOINT}/:id`, async (req, res) => {
-    const id = parseFloat(req.params.id);
-    if (isNaN(id))
-      return res.status(400).json({ error: 'id precisa ser um número' })
-
+    const { id } = req.params;
     try {
       await removeAsk(id)
       return res.status(201).send()
@@ -47,10 +44,7 @@ async function loadCrud(app) {
 
   // Atualizar uma pergunta
   app.put(`/${ENDPOINT}/:id`, async (req, res) => {
-    const id = parseFloat(req.params.id);
-    if (isNaN(id))
-      return res.status(400).json({ error: 'id precisa ser um número' })
-
+    const { id } = req.params;
     try {
       const ask = await updateAsk(id, req.body)
       return res.status(201).json(ask)

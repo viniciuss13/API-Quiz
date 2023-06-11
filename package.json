@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "start:dev": "nodemon tests/test.server.js",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "coverage": "npm run test --coverage"
   },
   "keywords": [],
   "author": "",

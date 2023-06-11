@@ -11,7 +11,7 @@ const ASK_DIFICULT = {
 
 /** 
 * @typedef Ask
-* @prop {string} _id
+* @prop {mongoose.Types.ObjectId} _id
 * @prop {string} tag
 * @prop {string} question
 * @prop {string[]} choices
@@ -66,19 +66,19 @@ async function createAsk(input) {
 
 
 /**
- * @param {number} id 
+ * @param {string} id 
  * @param {UpdateAsk} input 
  * @returns {Promise<Ask>}
  */
 async function updateAsk(id, input) {
-    const doc = await MODEL.findByIdAndUpdate(id, input)
+    const doc = await MODEL.findByIdAndUpdate(id, input, { new: true })
     if (doc === null) throw new Error(`Questão não encontrada com id ${id}`)
     return doc.toObject()
 }
 
 
 /**
- * @param {number} id
+ * @param {string} id
  */
 async function removeAsk(id) {
     MODEL.findByIdAndRemove(id)
