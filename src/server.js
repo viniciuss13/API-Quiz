@@ -5,12 +5,12 @@ const { service } = require('./ask');
 
 /** @type {import('http').Server} */
 let SERVER;
-
+const DEFAULT_PORT = 3000;
 
 /**
  * @param {import('./database').ConnectionOptions} databaseOption
  */
-async function startServer(databaseOption, port = 3000) {
+async function startServer(databaseOption, port = DEFAULT_PORT) {
     try {
         await connect(databaseOption)
 
@@ -33,4 +33,4 @@ async function closeServer() {
     await disconnect()
 }
 
-module.exports = { startServer, closeServer }
+module.exports = { DEFAULT_PORT, startServer, closeServer }

@@ -28,7 +28,7 @@ const SCHEMA = new mongoose.Schema({
     choices: { type: [String], required: true },
     answer: { type: String, required: true },
     dificulty: { type: String, enum: Object.values(ASK_DIFICULT), required: true }
-})
+}, { versionKey: false, })
 
 const MODEL = mongoose.model('questions', SCHEMA)
 
@@ -68,6 +68,7 @@ async function createAsk(input) {
 /**
  * @param {number} id 
  * @param {UpdateAsk} input 
+ * @returns {Promise<Ask>}
  */
 async function updateAsk(id, input) {
     const doc = await MODEL.findByIdAndUpdate(id, input)
