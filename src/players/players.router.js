@@ -1,6 +1,6 @@
 // @ts-check
 
-const { getPlayerById, createPlayer, updatePlayerById } = require("./player.service");
+const { getPlayerById, createPlayer, updatePlayerById } = require("./players.service");
 
 const ENDPOINT = "player";
 

@@ -9,7 +9,7 @@ const mongoose = require('mongoose');
  * @prop {string} name
  * @prop {number} points
  * 
- * @typedef {Pick< Player, 'name'>} CreatePlayer
+ * @typedef {Pick<Player, 'name'>} CreatePlayer
  * @typedef {Partial<Omit<Player, '_id'>>} UpdatePlayer
  */
 

@@ -1,6 +1,6 @@
 const { gateway, CATEGORIES, DIFFICULTY, QUESTION_TYPE } = require('../gateways/trivia.gateway');
-const questionModel = require('./questions.model')
-const { model: playerModel } = require('../player')
+const questionsModel = require('./questions.model')
+const { model: playersModel } = require('../players')
 
 /**
  * @typedef PrepareOptions
@@ -23,7 +23,7 @@ async function getNewUniqueQuestionsByGateway({ quantity, difficulty }) {
             questionType: QUESTION_TYPE.multiple
         })
         const gatewayNewQuestions = await Promise.all(gatewayQuestionResponse.results.filter(async ({ question }) => {
-            const dbQuestion = await questionModel.findOne({ question })
+            const dbQuestion = await questionsModel.findOne({ question })
             return dbQuestion === null
         }))
         if (gatewayNewQuestions.length > 0) newQuestionsList.concat(gatewayNewQuestions)
@@ -41,7 +41,7 @@ async function prepareNewQuestions({ quantity, difficulty }) {
 
     const newQuestionsInDb = await Promise.all(
         newQuestions.results.map(async (input) => {
-            const question = await questionModel.create({
+            const question = await questionsModel.create({
                 answer: input.correct_answer,
                 category: input.category,
                 choices: [...input.incorrect_answers, input.correct_answer],
@@ -63,7 +63,7 @@ async function prepareNewQuestions({ quantity, difficulty }) {
 async function getRandomQuestion(playerId) {
     /** @type {import('./questions.model').Question} */
     let question;
-    question = await questionModel.findOne({ 'playerAnswers.playerId': { $ne: playerId }, 'playerAnswers.isCorrect': false })
+    question = await questionsModel.findOne({ 'playerAnswers.playerId': { $ne: playerId }, 'playerAnswers.isCorrect': false })
     if (question === null) {
         const newQuestions = await prepareNewQuestions()
         const randomQuestionIndex = Math.floor(Math.random() * newQuestions.length)
@@ -79,14 +79,14 @@ async function getRandomQuestion(playerId) {
  * @returns {Promise<boolean>} if is correct or not
  */
 async function answerQuestion(playerId, questionId, answer) {
-    const question = await questionModel.getById(questionId)
+    const question = await questionsModel.getById(questionId)
     const isCorrect = question.answer.toLowerCase() === answer.toLowerCase()
 
-    if (isCorrect) await playerModel.updateById(playerId, { $inc: { points: 1 } })
+    if (isCorrect) await playersModel.updateById(playerId, { $inc: { points: 1 } })
 
     /** @type {import('./questions.model').QuestionAnswer} */
     const answer = { playerId, isCorrect }
-    await questionModel.updateById(questionId, { $push: { playerAnswers: answer } })
+    await questionsModel.updateById(questionId, { $push: { playerAnswers: answer } })
 
     return isCorrect
 }

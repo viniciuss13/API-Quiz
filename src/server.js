@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { connect, disconnect } = require('./database');
 const { router: questionsRouter } = require('./questions');
-const { router: playersRouter } = require('./player')
+const { router: playersRouter } = require('./players')
 
 /** @type {import('http').Server} */
 let SERVER;
