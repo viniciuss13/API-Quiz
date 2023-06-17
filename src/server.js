@@ -28,7 +28,6 @@ async function startServer(databaseOption, port = DEFAULT_PORT) {
         console.error(error.message)
         process.exit(1)
     }
-
 }
 
 async function closeServer() {

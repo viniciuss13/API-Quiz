@@ -85,8 +85,8 @@ async function answerQuestion(playerId, questionId, answer) {
     if (isCorrect) await playersModel.updateById(playerId, { $inc: { points: 1 } })
 
     /** @type {import('./questions.model').QuestionAnswer} */
-    const answer = { playerId, isCorrect }
-    await questionsModel.updateById(questionId, { $push: { playerAnswers: answer } })
+    const newPlayerAnswer = { playerId, isCorrect }
+    await questionsModel.updateById(questionId, { $push: { playerAnswers: newPlayerAnswer } })
 
     return isCorrect
 }
