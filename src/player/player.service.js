@@ -1,44 +1,28 @@
-// @ts-check
-
-const { getPlayerById, createPlayer, updatePlayer } = require("./player.model");
-
-const ENDPOINT = "player";
+const model = require('./player.model')
 
 /**
- * @param {import ('express').Express} playerapp
+ * @param {string} id
+ * @returns {Promise<import("./player.model").Player>}
  */
-
-async function loadCrudPlayer(playerapp) {
-  // Obter player pelo ID
-  playerapp.get(`/${ENDPOINT}/:id`, async (req, res) => {
-    try {
-      const player = await getPlayerById(req.params.id);
-      res.json(player);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
-  // Criar um player
-  playerapp.post(`/${ENDPOINT}`, async (req, res) => {
-    try {
-      const player = await createPlayer(req.body);
-      res.json(player);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
-  // Atualizar um player
-  playerapp.put(`/${ENDPOINT}/:id`, async (req, res) => {
-    try {
-      const player = await updatePlayer(req.params.id, req.body);
-      res.json(player);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
-
+async function getPlayerById(id) {
+    return model.getById(id)
 }
 
-module.exports = { loadCrudPlayer };
+/**
+ * @param {import('./player.model').CreatePlayer} input
+ * @returns {Promise<import("./player.model").Player>}
+ */
+async function createPlayer(input) {
+    return model.create(input)
+}
+
+/**
+ * @param {string} id
+ * @param {import('./player.model').UpdatePlayer} input
+ * @returns {Promise<import("./player.model").Player>}
+ */
+async function updatePlayerById(id, input) {
+    return model.updateById(id, input)
+}
+
+module.exports = { getPlayerById, createPlayer, updatePlayerById }

@@ -1,7 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { connect, disconnect } = require('./database');
-const { service } = require('./ask');
+const { router: questionsRouter } = require('./questions');
+const { router: playersRouter } = require('./player')
 
 /** @type {import('http').Server} */
 let SERVER;
@@ -16,7 +17,9 @@ async function startServer(databaseOption, port = DEFAULT_PORT) {
 
         const app = express()
         app.use(bodyParser.json());
-        service.loadCrud(app)
+
+        questionsRouter.loadCrud(app)
+        playersRouter.loadCrud(app)
 
         SERVER = app.listen(port, () => {
             console.log(`Servidor iniciado na porta ${port}`);

@@ -13,7 +13,6 @@ const mongoose = require('mongoose');
  * @typedef {Partial<Omit<Player, '_id'>>} UpdatePlayer
  */
 
-
 const SCHEMA = new mongoose.Schema({
     name: { type: String, required: true },
     points: { type: Number, required: true }
@@ -25,18 +24,17 @@ const MODEL = mongoose.model('players', SCHEMA)
  * @param {string} id
  * @returns {Promise<Player>}
  */
-async function getPlayerById(id) {
+async function getById(id) {
     const playerInDb = await MODEL.findById(id)
     if (playerInDb === null) throw new Error(`Player not found with id ${id}`)
     return playerInDb.toObject()
-
 }
 
 /**
  * @param {CreatePlayer} input
  * @returns {Promise<Player>}
  */
-async function createPlayer(input) {
+async function create(input) {
     const player = new MODEL({ ...input, points: 0 })
     await player.save({ validateBeforeSave: true })
     return player.toObject()
@@ -44,13 +42,13 @@ async function createPlayer(input) {
 
 /**
  * @param {string} id
- * @param {UpdatePlayer} input
+ * @param { mongoose.UpdateQuery<UpdatePlayer> } input
  * @returns {Promise<Player>}
  */
-async function updatePlayer(id, input) {
+async function updateById(id, input) {
     const playerUpdated = await MODEL.findByIdAndUpdate(id, input, { new: true })
     if (playerUpdated === null) throw new Error(`Player not found with id ${id}`)
     return playerUpdated.toObject()
 }
 
-module.exports = { MODEL, createPlayer, updatePlayer, getPlayerById }
+module.exports = { MODEL, create, updateById, getById }
