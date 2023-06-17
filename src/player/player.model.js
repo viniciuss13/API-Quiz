@@ -1,5 +1,6 @@
 // @ts-check
 
+
 const mongoose = require('mongoose');
 
 
@@ -32,11 +33,22 @@ async function getPlayerById(id) {
 
 }
 
+async function getPlayerByName(name) {
+    const playerInDb = await MODEL.findOne({name: name})
+    if (playerInDb === null) throw new Error(`Player not found with name ${name}`)
+    return playerInDb.toObject()
+
+}
+
 /**
  * @param {CreatePlayer} input
  * @returns {Promise<Player>}
  */
 async function createPlayer(input) {
+    const existingPlayer = await MODEL.findOne({name: input.name});
+    if(existingPlayer){
+        throw new Error(`Nome de usuário ${input.name} já escolhido`)
+    }
     const player = new MODEL({ ...input, points: 0 })
     await player.save({ validateBeforeSave: true })
     return player.toObject()
@@ -53,4 +65,4 @@ async function updatePlayer(id, input) {
     return playerUpdated.toObject()
 }
 
-module.exports = { MODEL, createPlayer, updatePlayer, getPlayerById }
+module.exports = { MODEL, createPlayer, updatePlayer, getPlayerById, getPlayerByName }

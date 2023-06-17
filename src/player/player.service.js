@@ -1,6 +1,6 @@
 // @ts-check
 
-const { getPlayerById, createPlayer, updatePlayer } = require("./player.model");
+const { getPlayerById, createPlayer, updatePlayer, getPlayerByName } = require("./player.model");
 
 const ENDPOINT = "player";
 
@@ -10,14 +10,25 @@ const ENDPOINT = "player";
 
 async function loadCrudPlayer(playerapp) {
   // Obter player pelo ID
-  playerapp.get(`/${ENDPOINT}/:id`, async (req, res) => {
-    try {
+// Obter jogador por ID
+playerapp.get(`/${ENDPOINT}/id/:id`, async (req, res) => {
+  try {
       const player = await getPlayerById(req.params.id);
       res.json(player);
-    } catch (error) {
+  } catch (error) {
       res.status(500).json({ error: error.message });
-    }
-  });
+  }
+});
+
+// Obter jogador por nome
+playerapp.get(`/${ENDPOINT}/name/:name`, async (req, res) => {
+  try {
+      const player = await getPlayerByName(req.params.name);
+      res.json(player);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
 
   // Criar um player
   playerapp.post(`/${ENDPOINT}`, async (req, res) => {
