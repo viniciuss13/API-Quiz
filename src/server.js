@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { connect, disconnect } = require('./database');
+const populateQuestionsFromQuizAPI = require('./ask/populate');
 const { service } = require('./ask');
 const { servicePlayer } = require('./player');
 
@@ -24,6 +25,9 @@ async function startServer(databaseOption, port = DEFAULT_PORT) {
         SERVER = app.listen(port, () => {
             console.log(`Servidor iniciado na porta ${port}`);
         });
+
+        await populateQuestionsFromQuizAPI();
+        
     } catch (error) {
         console.error(error.message)
         process.exit(1)
