@@ -30,14 +30,15 @@ const { BASE_URL, DEFAULT_LIMIT } = require('./constants');
  */
 async function getQuestions({ limit, category, difficulty, questionType }) {
     const url = new URL('', BASE_URL)
-    url.searchParams.append('limit', limit ?? DEFAULT_LIMIT)
+    url.searchParams.append('amount', limit ?? DEFAULT_LIMIT)
     if (category) url.searchParams.append('category', category)
     if (difficulty) url.searchParams.append('difficulty', difficulty)
     if (questionType) url.searchParams.append('type', questionType)
 
     const response = await axios.get(url)
     if (response.status !== 200) throw new Error('Fail to get questions!')
-    return response.data
+    if (!response.data?.results?.length > 0) throw new Error('Data not found')
+    return response.data.results
 }
 
 module.exports = {

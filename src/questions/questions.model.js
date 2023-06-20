@@ -1,13 +1,8 @@
 // @ts-check
 
 const mongoose = require('mongoose');
+const { DIFFICULTY } = require('../gateways/trivia.gateway');
 
-/** @enum {string} */
-const ASK_DIFICULT = {
-    EASY: 'FÁCIL',
-    INTERMIDIARY: 'MÉDIO',
-    HARD: 'DIFÍCIL'
-}
 
 /**
  * @typedef QuestionAnswer
@@ -22,7 +17,7 @@ const ASK_DIFICULT = {
 * @prop {string} question
 * @prop {string[]} choices
 * @prop {string} answer
-* @prop {ASK_DIFICULT} dificulty
+* @prop {DIFFICULTY} dificulty
 * @prop {QuestionAnswer[]} playerAnswers
 *
 * @typedef {Omit<Question, '_id'>} CreateQuestion
@@ -34,7 +29,7 @@ const SCHEMA = new mongoose.Schema({
     question: { type: String, required: true },
     choices: { type: [String], required: true },
     answer: { type: String, required: true },
-    dificulty: { type: String, enum: Object.values(ASK_DIFICULT), required: true },
+    dificulty: { type: String, enum: Object.values(DIFFICULTY), required: true },
     playerAnswers: [{
         playerId: { type: mongoose.Types.ObjectId, required: true },
         isCorrect: { type: Boolean, required: true }
@@ -98,4 +93,4 @@ async function removeAsk(id) {
 }
 
 
-module.exports = { ASK_DIFICULT, create, updateById, getById, findOne, removeAsk }
+module.exports = { create, updateById, getById, findOne, removeAsk }

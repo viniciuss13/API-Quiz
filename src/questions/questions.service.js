@@ -13,34 +13,45 @@ const { model: playersModel } = require('../players')
  * @returns {Promise<import('../gateways/trivia.gateway/gateway').QuestionResult[]>}
  */
 async function getNewUniqueQuestionsByGateway({ quantity, difficulty }) {
-    const newQuestionsList = []
+    let newQuestionsList = []
+    let tries = 0
 
     while (newQuestionsList.length !== quantity) {
-        const gatewayQuestionResponse = await gateway.getQuestions({
-            limit: quantity,
-            category: CATEGORIES.science_and_nature,
-            difficulty: difficulty ?? DIFFICULTY.easy,
-            questionType: QUESTION_TYPE.multiple
-        })
-        const gatewayNewQuestions = await Promise.all(gatewayQuestionResponse.results.filter(async ({ question }) => {
-            const dbQuestion = await questionsModel.findOne({ question })
-            return dbQuestion === null
-        }))
-        if (gatewayNewQuestions.length > 0) newQuestionsList.concat(gatewayNewQuestions)
+        try{
+            const gatewayQuestionResponse = await gateway.getQuestions({
+                limit: quantity,
+                category: CATEGORIES.science_and_nature,
+                difficulty: difficulty,
+                questionType: QUESTION_TYPE.multiple
+            })
+            const gatewayNewQuestions = await Promise.all(gatewayQuestionResponse.filter(async ({ question }) => {
+                const dbQuestion = await questionsModel.findOne({ question })
+                return dbQuestion === null
+            }))
+            if (gatewayNewQuestions.length > 0) newQuestionsList = [...newQuestionsList, ...gatewayNewQuestions]
+        } catch (error) {
+            console.error(error.message)
+            tries += 1
+        } finally {
+            if (tries === 3) process.exit(1)
+        }
     }
 
     return newQuestionsList.slice(0, quantity)
 }
 
 /**
- * @param {PrepareOptions} param0 
+ * @param {PrepareOptions} options 
  * @returns {Promise<import('./questions.model').Question[]}
  */
-async function prepareNewQuestions({ quantity, difficulty }) {
+async function prepareNewQuestions(options) {
+    const quantity = options?.quantity ?? 3
+    const difficulty = options?.difficulty
+
     const newQuestions = await getNewUniqueQuestionsByGateway({ quantity, difficulty })
 
     const newQuestionsInDb = await Promise.all(
-        newQuestions.results.map(async (input) => {
+        newQuestions.map(async (input) => {
             const question = await questionsModel.create({
                 answer: input.correct_answer,
                 category: input.category,
